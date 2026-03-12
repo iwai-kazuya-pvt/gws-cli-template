@@ -93,3 +93,9 @@ tasks:
       - task: uc1
       - task: uc2
       - task: uc3
+
+  xlsx-to-sheets:
+    desc: "Helper: Excel → Sheets 変換 & 読み取り"
+    dir: '{{.GWS_CLI_DIR}}'
+    cmds:
+      - chmod +x scripts/helper-xlsx-to-sheets.sh && ./scripts/helper-xlsx-to-sheets.sh {{.CLI_ARGS}}

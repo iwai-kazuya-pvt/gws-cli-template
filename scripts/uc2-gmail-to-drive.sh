@@ -180,6 +180,7 @@ for FILE in "${TMP_DIR}"/*; do
   
   if [ -n "$UPLOAD_FOLDER_ID" ]; then
     UPLOAD_RESULT=$(gws drive files create \
+      --params '{"supportsAllDrives": true}' \
       --json "{\"name\": \"${FILENAME}\", \"parents\": [\"${UPLOAD_FOLDER_ID}\"]}" \
       --upload "$FILE" \
       --format json)

@@ -16,7 +16,8 @@ gws-cli/
 └── scripts/
     ├── uc1-slides-template.sh          # UC1: Slides テンプレート量産
     ├── uc2-gmail-to-drive.sh           # UC2: Gmail 添付 → Drive 保存
-    └── uc3-issues-gmail-to-sheets.sh   # UC3: Issues + Gmail → Sheets
+    ├── uc3-issues-gmail-to-sheets.sh   # UC3: Issues + Gmail → Sheets
+    └── helper-xlsx-to-sheets.sh        # Helper: Excel → Sheets 変換 & 読み取り
 ```
 
 ## 🚀 クイックスタート
@@ -245,6 +246,39 @@ git add gws-cli && git commit -m "chore: update gws-cli submodule"
 | `scripts/` | ユースケースに合わせて新スクリプト追加 or 不要なものを削除 |
 
 > **Note:** GWS CLI 本体 (`gws` コマンド) はグローバルインストールなので、一度セットアップすればマシン上の全リポジトリから使えます。このリポジトリはあくまでプロジェクト固有の **設定・スクリプト・セキュリティルール** を束ねる「ランチャー」です。
+
+## ⚠️ Tips: よくあるハマりポイント
+
+### 共有ドライブのファイルが 404 になる
+
+共有ドライブ上のファイルは `supportsAllDrives: true` が必須です。
+
+```bash
+# ✗ 404 になる
+gws drive files get --params '{"fileId": "xxx"}'
+
+# ○ 共有ドライブ対応
+gws drive files get --params '{"fileId": "xxx", "supportsAllDrives": true}'
+```
+
+### Excel (.xlsx) ファイルは Sheets API で読めない
+
+Drive 上の Excel ファイルは Sheets API (`values.get` 等) が 400 エラーになります。ヘルパースクリプトで Google Sheets 形式に変換してから読み取ります。
+
+```bash
+# Excel → Sheets 変換 & データ読み取り
+./scripts/helper-xlsx-to-sheets.sh <FILE_ID>
+./scripts/helper-xlsx-to-sheets.sh <FILE_ID> "Sheet1!A1:Z50"
+```
+
+### GWS CLI のアカウント切り替え
+
+`gws auth login` で再認証すると以前の認証は上書きされます。複数アカウントを併用する場合は、対象ファイルの共有設定を追加する方が便利です。
+
+```bash
+# 現在の認証アカウント確認
+gws auth status 2>&1 | grep user
+```
 
 ## 📚 参考
 
