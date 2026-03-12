@@ -1,0 +1,95 @@
+# GWS CLI タスクランナー
+# https://taskfile.dev/
+version: '3'
+
+vars:
+  GWS_CLI_DIR: '{{.TASKFILE_DIR}}'
+
+tasks:
+  check:
+    desc: 前提条件のチェック（必須ツールの存在確認）
+    cmds:
+      - |
+        echo "🔍 前提条件チェック..."
+        OK=true
+        
+        for cmd in node npm gws jq python3; do
+          if command -v $cmd &>/dev/null; then
+            echo "  ✅ $cmd: $($cmd --version 2>&1 | head -1)"
+          else
+            echo "  ❌ $cmd: 見つかりません"
+            OK=false
+          fi
+        done
+        
+        # gh は UC3 のみ必須
+        if command -v gh &>/dev/null; then
+          echo "  ✅ gh: $(gh --version 2>&1 | head -1)"
+        else
+          echo "  ⚠️  gh: 見つかりません（UC3 で必要）"
+        fi
+        
+        # gcloud は API 有効化のみ
+        if command -v gcloud &>/dev/null; then
+          echo "  ✅ gcloud: $(gcloud --version 2>&1 | head -1)"
+        else
+          echo "  ⚠️  gcloud: 見つかりません（API 有効化で必要）"
+        fi
+        
+        if [ "$OK" = false ]; then
+          echo ""
+          echo "❌ 必須ツールが不足しています"
+          exit 1
+        fi
+        echo ""
+        echo "✅ 全ての必須ツールが揃っています"
+    silent: true
+
+  setup:
+    desc: GWS CLI セットアップ（インストール確認 + API 有効化）
+    dir: '{{.GWS_CLI_DIR}}'
+    cmds:
+      - chmod +x setup.sh && ./setup.sh
+
+  auth:
+    desc: GWS CLI 認証
+    dir: '{{.GWS_CLI_DIR}}'
+    cmds:
+      - |
+        if [ -f .env ]; then
+          set -a; source .env; set +a
+        else
+          echo "⚠️  .env が見つかりません: cp .env.example .env"
+          exit 1
+        fi
+        gws auth login
+
+  auth-status:
+    desc: GWS CLI 認証ステータス確認
+    cmds:
+      - gws auth status
+
+  uc1:
+    desc: "UC1: Slides テンプレートの量産"
+    dir: '{{.GWS_CLI_DIR}}'
+    cmds:
+      - chmod +x scripts/uc1-slides-template.sh && ./scripts/uc1-slides-template.sh
+
+  uc2:
+    desc: "UC2: Gmail 添付ファイル → Drive 自動保存"
+    dir: '{{.GWS_CLI_DIR}}'
+    cmds:
+      - chmod +x scripts/uc2-gmail-to-drive.sh && ./scripts/uc2-gmail-to-drive.sh {{.CLI_ARGS}}
+
+  uc3:
+    desc: "UC3: GitHub Issues + Gmail → Sheets 転記"
+    dir: '{{.GWS_CLI_DIR}}'
+    cmds:
+      - chmod +x scripts/uc3-issues-gmail-to-sheets.sh && ./scripts/uc3-issues-gmail-to-sheets.sh {{.CLI_ARGS}}
+
+  all:
+    desc: 全ユースケースを順番に実行
+    cmds:
+      - task: uc1
+      - task: uc2
+      - task: uc3

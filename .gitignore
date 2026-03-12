@@ -1,0 +1,11 @@
+# クレデンシャル・シークレット
+.env
+*.credentials.json
+client_secret*.json
+
+# GWS CLI トークン
+.gws-tokens/
+
+# 一時ファイル
+tmp/
+*.tmp

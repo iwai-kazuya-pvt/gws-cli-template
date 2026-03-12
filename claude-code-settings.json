@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(*gws * delete*)",
+      "Bash(*gws * trash*)",
+      "Bash(*gws * remove*)",
+      "Bash(*gws drive files update*--json*trashed*)",
+      "Bash(*gws admin users delete*)",
+      "Bash(*gws admin groups delete*)",
+      "Bash(*gws gmail users messages send*)",
+      "Bash(*gws auth export*)",
+      "Read(*.env*)",
+      "Read(*credentials*)",
+      "Read(*client_secret*)"
+    ]
+  }
+}
