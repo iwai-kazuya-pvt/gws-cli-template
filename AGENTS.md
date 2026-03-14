@@ -352,6 +352,7 @@ gws drive files update \
 | Gmail `metadataHeaders` で **ハング** | 使わない。フル取得 → jq でヘッダー抽出 |
 | `--download` フラグが **存在しない** | `--output /path/to/file` を使う |
 | `--format json` を付け忘れると **table 形式** | パイプ前に必ず `--format json` を付ける |
+| macOS に **`timeout` コマンドがない** | `timeout` を使わない。必要なら `brew install coreutils` で `gtimeout` を使う |
 
 ## 📜 GWS CLI コマンド体系
 

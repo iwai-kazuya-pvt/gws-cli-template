@@ -81,7 +81,8 @@ echo "[]" > "${TMP_DIR}/emails.json"
 for MSG_ID in $MSG_IDS; do
   # NOTE: format=metadata + metadataHeaders は GWS CLI v0.11 でハングするため
   #       シンプルな get を使用（全ヘッダーから Subject/From/Date を抽出）
-  MSG_DETAIL=$(timeout 30 gws gmail users messages get \
+  # NOTE: macOS には timeout がないため、直接実行する
+  MSG_DETAIL=$(gws gmail users messages get \
     --params "{\"userId\": \"me\", \"id\": \"${MSG_ID}\"}" \
     --format json 2>/dev/null || echo '{}')
   
