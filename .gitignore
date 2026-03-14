@@ -3,8 +3,9 @@
 *.credentials.json
 client_secret*.json
 
-# GWS CLI トークン
+# GWS CLI トークン・設定（v0.11+ は ~/.config/gws/ に保存）
 .gws-tokens/
+.config/gws/
 
 # 一時ファイル
 tmp/

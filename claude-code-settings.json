@@ -12,6 +12,8 @@
       "Bash(*gws gmail users drafts send*)",
       "Bash(*gws calendar events delete*)",
       "Bash(*gws calendar events insert*--json*)",
+      "Bash(*gws calendar events update*--json*)",
+      "Bash(*gws calendar events patch*--json*)",
       "Bash(*gws auth export*)",
       "Bash(*cat *.env*)",
       "Bash(*less *.env*)",
