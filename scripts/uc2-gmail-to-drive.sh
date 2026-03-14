@@ -183,12 +183,12 @@ for FILE in "${TMP_DIR}"/*; do
       --params '{"supportsAllDrives": true}' \
       --json "{\"name\": \"${FILENAME}\", \"parents\": [\"${UPLOAD_FOLDER_ID}\"]}" \
       --upload "$FILE" \
-      --format json)
+      --format json 2>/dev/null)
   else
     UPLOAD_RESULT=$(gws drive files create \
       --json "{\"name\": \"${FILENAME}\"}" \
       --upload "$FILE" \
-      --format json)
+      --format json 2>/dev/null)
   fi
   
   FILE_ID=$(echo "$UPLOAD_RESULT" | jq -r '.id')

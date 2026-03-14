@@ -226,7 +226,7 @@ task sheets-list -- <SHEET_ID>             # シート一覧
 ```bash
 # 他のリポジトリで submodule 追加
 cd your-project
-git submodule add https://github.com/iwai-kazuya-z/gws-cli-template.git gws-cli
+git submodule add https://github.com/iwai-kazuya-pvt/gws-cli-template.git gws-cli
 git commit -m "feat: add gws-cli submodule"
 
 # .env はリポ固有なので gws-cli/ 内に作成
